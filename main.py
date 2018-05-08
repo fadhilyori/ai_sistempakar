@@ -112,7 +112,7 @@ def main():
             curr = curr + int(itr)
         presentase = (curr / total) * 100
         item.setPresentase(presentase)
-        print(item)
+        print(item + "%")
 
 if __name__ == "__main__":
     main()
