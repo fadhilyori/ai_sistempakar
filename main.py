@@ -42,6 +42,7 @@ def main():
               Gejala(17, "Memakan makanan kaleng", ""),
               Gejala(18, "Membeli susu", ""),
               Gejala(19, "Meminum susu", "")]
+
     # Asking question
     nomor = 1
     for item in gejala:
@@ -54,9 +55,11 @@ def main():
         answer = input()
         if answer.lower() == 'y' or answer == None or answer == "":
             userAnswerYes.append(item.getId())
+
     # Menghitung persentase kemungkinan penyakit
     for item in penyakit:
         item.calculateProbabilitas(userAnswerYes)
+
     # Meghitung persentase kemungkinan penyebab
     for item in penyebab:
         penyebabID = item.getPenyakit()
@@ -71,6 +74,7 @@ def main():
         presentase = (curr / total) * 100
         item.setPresentase(presentase)
         print(item.getNama() + " : " + str(int(item.getPresentase())) + "%")
+        
     # Penentuan hasil
     thresholdValue = 80 # %
     kemungkinanPenyebab = []
