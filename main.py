@@ -43,20 +43,20 @@ def main():
               Gejala(18, "Membeli susu", ""),
               Gejala(19, "Meminum susu", "")]
     # Asking question
+    nomor = 1
     for item in gejala:
         if item.getText() != "":
-            question = "Apakah anda " + item.getText() + " " + item.getNama().lower() + " [y/n] ? "
+            question = str(nomor) + ". Apakah anda " + item.getText() + " " + item.getNama().lower() + " [y/n] ? "
         else:
-            question = "Apakah anda " + item.getNama().lower() + " [y/n] ? "
+            question = str(nomor) + ". Apakah anda " + item.getNama().lower() + " [y/n] ? "
+        nomor += 1
         print(question, end="")
         answer = input()
-        if answer.lower() == 'y':
+        if answer.lower() == 'y' or answer == None or answer == "":
             userAnswerYes.append(item.getId())
-    # print(userAnswerYes)
-    # Menghitung kemungkinan
+    # Menghitung persentase kemungkinan penyakit
     for item in penyakit:
         item.calculateProbabilitas(userAnswerYes)
-        # print(item.getProb())
     # Meghitung persentase kemungkinan penyebab
     for item in penyebab:
         penyebabID = item.getPenyakit()
@@ -70,7 +70,23 @@ def main():
             curr = curr + int(itr)
         presentase = (curr / total) * 100
         item.setPresentase(presentase)
-        print(item.getNama() + " : " + str(item) + "%")
-
+        print(item.getNama() + " : " + str(int(item.getPresentase())) + "%")
+    # Penentuan hasil
+    thresholdValue = 80 # %
+    kemungkinanPenyebab = []
+    highest = 0
+    for item in penyebab:
+        if item.getPresentase() >= thresholdValue:
+            kemungkinanPenyebab.append(item)
+        if item.getPresentase() > highest:
+            highest = item.getPresentase()
+    if len(kemungkinanPenyebab) == 0:
+        print("Anda sehat dan tidak terindikasi penyakit apapun")
+    else:
+        for item in kemungkinanPenyebab:
+            if item.getPresentase() == highest:
+                hasil = item
+        print("Anda terkena " + hasil.getNama() + ", dengan kemungkinan : " + str(int(hasil.getPresentase())) + "%")
+    
 if __name__ == "__main__":
     main()
